@@ -44,7 +44,9 @@
           <h2>Kemampuan</h2>
           <ul>
             <li>Memiliki pengetahuan tentang HTML dan CSS</li>
-            <li>Memahami dan dapat berbicara bahasa Inggris dan bahasa Indonesia</li>
+            <li>
+              Memahami dan dapat berbicara bahasa Inggris dan bahasa Indonesia
+            </li>
           </ul>
         </div>
       </slide>
