@@ -1,130 +1,96 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br />
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
-        >vue-cli documentation</a
-      >.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
-          target="_blank"
-          rel="noopener"
-          >babel</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router"
-          target="_blank"
-          rel="noopener"
-          >router</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-vuex"
-          target="_blank"
-          rel="noopener"
-          >vuex</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          rel="noopener"
-          >eslint</a
-        >
-      </li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li>
-        <a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a>
-      </li>
-      <li>
-        <a href="https://forum.vuejs.org" target="_blank" rel="noopener"
-          >Forum</a
-        >
-      </li>
-      <li>
-        <a href="https://chat.vuejs.org" target="_blank" rel="noopener"
-          >Community Chat</a
-        >
-      </li>
-      <li>
-        <a href="https://twitter.com/vuejs" target="_blank" rel="noopener"
-          >Twitter</a
-        >
-      </li>
-      <li>
-        <a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a>
-      </li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li>
-        <a href="https://router.vuejs.org" target="_blank" rel="noopener"
-          >vue-router</a
-        >
-      </li>
-      <li>
-        <a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-devtools#vue-devtools"
-          target="_blank"
-          rel="noopener"
-          >vue-devtools</a
-        >
-      </li>
-      <li>
-        <a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener"
-          >vue-loader</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-          rel="noopener"
-          >awesome-vue</a
-        >
-      </li>
-    </ul>
+  <div id="main">
+    <div class="two-v_pictureLeft">
+      <img src="../assets/foto.jpg" alt="Foto gw">
+      <h1>
+        Andhika Satria <br />
+        Bagaskoro
+      </h1>
+    </div>
+    <slide />
+    <!-- <div class="board">
+      <div class="kartu">
+        <h2>Summary</h2>
+        <p>
+          Saya seorang frontend developer yang kreatif dan terus berkembang dengan
+          pengalaman selama kurang lebih 1 setengah
+          Bersemangat untuk terus mengembangkan diri dan beradaptasi dengan
+          permasalahan yang ada.
+        </p>
+      </div>
+      <div class="kartu">
+        <h2>Karir</h2>
+        <h3>Frontend Developer</h3>
+        <p>Bafe.space | November 2018 - Mei 2020</p>
+        <ul>
+          <li>Mendesain website bafe.space</li>
+          <li>Maintenance dan mengupgrade website bafe.space</li>
+        </ul>
+      </div>
+      <div class="kartu">
+        <h2>Edukasi</h2>
+        <h3>S1 Ilmu Komputer</h3>
+        <p>Universitas Gadjah Mada | 2015</p>
+      </div>
+      <div class="kartu">
+        <h2>Organisasi</h2>
+        <h3>Kepala Divisi Studio</h3>
+        <p>Scientie Music Community | Universitas Gadjah Mada | 2016</p>
+        <h3>Kepala Divisi Media dan Informasi</h3>
+        <p>Keluarga Besar Karanganyar Gadjah Mada | 2016</p>
+      </div>
+      <div class="kartu">
+        <h2>Kemampuan</h2>
+        <ul>
+          <li>Memiliki pengetahuan tentang HTML dan CSS</li>
+          <li>Memahami dan dapat berbicara bahasa Inggris dan bahasa Indonesia</li>
+        </ul>
+      </div>
+    </div> -->
   </div>
 </template>
 
 <script>
+import slide from '../components/Slide.vue'
+
 export default {
   name: "HelloWorld",
-  props: {
-    msg: String
+  components: {
+    slide
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-h3 {
-  margin: 40px 0 0;
+#main {
+  margin: 20px 60px;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+.two-v_pictureLeft {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 40px 100px;
+  img {
+    width: 250px;
+    justify-self: end;
+    margin: 0 20px;
+  }
+  h1 {
+    align-self: center;
+    justify-self: start;
+    font-size: 48px;
+  }
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.board {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  margin: 30px 10px;
+  .kartu {
+    margin: 0 10px;
+    border: 3px solid purple;
+    h2,h3,p {
+      margin: 15px;
+    }
+  }
 }
 </style>
