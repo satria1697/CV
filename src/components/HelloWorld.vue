@@ -1,96 +1,115 @@
 <template>
   <div id="main">
-    <div class="two-v_pictureLeft">
-      <img src="../assets/foto.jpg" alt="Foto gw">
-      <h1>
-        Andhika Satria <br />
-        Bagaskoro
-      </h1>
-    </div>
-    <slide />
-    <!-- <div class="board">
-      <div class="kartu">
-        <h2>Summary</h2>
-        <p>
-          Saya seorang frontend developer yang kreatif dan terus berkembang dengan
-          pengalaman selama kurang lebih 1 setengah
-          Bersemangat untuk terus mengembangkan diri dan beradaptasi dengan
-          permasalahan yang ada.
-        </p>
-      </div>
-      <div class="kartu">
-        <h2>Karir</h2>
-        <h3>Frontend Developer</h3>
-        <p>Bafe.space | November 2018 - Mei 2020</p>
-        <ul>
-          <li>Mendesain website bafe.space</li>
-          <li>Maintenance dan mengupgrade website bafe.space</li>
-        </ul>
-      </div>
-      <div class="kartu">
-        <h2>Edukasi</h2>
-        <h3>S1 Ilmu Komputer</h3>
-        <p>Universitas Gadjah Mada | 2015</p>
-      </div>
-      <div class="kartu">
-        <h2>Organisasi</h2>
-        <h3>Kepala Divisi Studio</h3>
-        <p>Scientie Music Community | Universitas Gadjah Mada | 2016</p>
-        <h3>Kepala Divisi Media dan Informasi</h3>
-        <p>Keluarga Besar Karanganyar Gadjah Mada | 2016</p>
-      </div>
-      <div class="kartu">
-        <h2>Kemampuan</h2>
-        <ul>
-          <li>Memiliki pengetahuan tentang HTML dan CSS</li>
-          <li>Memahami dan dapat berbicara bahasa Inggris dan bahasa Indonesia</li>
-        </ul>
-      </div>
-    </div> -->
+    <router-link
+      class="buttonTop"
+      :to="{
+        name: 'Form',
+        params: {
+          edit: 'no'
+        }
+      }"
+    >
+      + Tambah
+    </router-link>
+    <table class="tableMain">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>NIK</th>
+          <th>Nama</th>
+          <th>Tempat Lahir</th>
+          <th>Tanggal Lahir</th>
+          <th>Gender</th>
+          <th>Alamat</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="psn in person" :key="psn.id">
+          <td>{{ psn.id }}</td>
+          <td>{{ psn.nik }}</td>
+          <td>{{ psn.nama }}</td>
+          <td>{{ psn.tmptl }}</td>
+          <td>{{ psn.tgll }}</td>
+          <td>{{ psn.gender }}</td>
+          <td>{{ psn.alamat }}</td>
+          <td class="buttonClass">
+            <router-link
+              :to="{ name: 'Form', params: { userId: psn.id, edit: 'yes' } }"
+              >Edit</router-link
+            >
+            <button v-on:click="deletePerson(psn.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <script>
-import slide from '../components/Slide.vue'
-
+import axios from "axios";
 export default {
   name: "HelloWorld",
-  components: {
-    slide
+  data() {
+    return {
+      person: []
+    };
+  },
+  mounted() {
+    let self = this;
+    self.updateData();
+  },
+  methods: {
+    deletePerson(ids) {
+      let self = this;
+      let link = "http://127.0.0.1:8000/api/person/{id}";
+      let linknew = link.replace("{id}", ids);
+      axios.delete(linknew).then(response => {
+        console.log(response);
+        self.updateData();
+      });
+    },
+    updateData() {
+      axios.get("http://127.0.0.1:8000/api/person").then(response => {
+        console.log(response.data);
+        let self = this;
+        self.person = response.data;
+      });
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-#main {
-  margin: 20px 60px;
+td,
+th {
+  border: 1px black solid;
+  padding: 1em;
 }
-.two-v_pictureLeft {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin: 40px 100px;
-  img {
-    width: 250px;
-    justify-self: end;
-    margin: 0 20px;
-  }
-  h1 {
-    align-self: center;
-    justify-self: start;
-    font-size: 48px;
-  }
-}
-.board {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  margin: 30px 10px;
-  .kartu {
-    margin: 0 10px;
-    border: 3px solid purple;
-    h2,h3,p {
-      margin: 15px;
+table {
+  border-collapse: collapse;
+  .buttonClass {
+    display: grid;
+    a {
+      display: inline-block;
+      padding: 5px 20px;
+      margin: 5px;
+      border: 1px solid black;
+      border-radius: 15px;
     }
   }
+}
+
+.buttonTop {
+  display: inline-block;
+  padding: 15px 30px;
+  margin: 0px 0 10px 0;
+  border: 1px solid black;
+  border-radius: 15px;
+}
+
+a {
+  text-decoration: none;
 }
 </style>
