@@ -1,40 +1,36 @@
 <template>
-  <div>
-    <router-link to="/formPH">
+  <div class="main">
+    <!-- <sidebar-menu :menu="menu" /> -->
+    <!-- <router-link to="/formPH">
       Form Masuk
-    </router-link>
-    <!-- <table>
-      <thead>
-        <td>
-          ID
-        </td>
-        <td>
-          Kode
-        </td>
-        <td>
-          ID person
-        </td>
-        <td>
-          ID hobi
-        </td>
-      </thead>
-      <tr v-for="data in dataAll" :key="data.id">
-        <td>{{ data.id }}</td>
-        <td>{{ data.notrans }}</td>
-        <td>{{ data.personid }}</td>
-        <td>{{ data.hobbyid }}</td>
-      </tr>
-    </table> -->
-    <v-data-table
-      :page="page"
-      :pageCount="numberOfPages"
-      :headers="headers"
-      :items="passengers"
-      :options.sync="options"
-      :server-items-length="totalPassengers"
-      :loading="loading"
-      class="elevation-1"
-    ></v-data-table>
+    </router-link> -->
+    <div>
+      <table>
+        <thead>
+          <td>
+            ID
+          </td>
+          <td>
+            Kode
+          </td>
+          <td>
+            ID person
+          </td>
+          <td>
+            ID hobi
+          </td>
+        </thead>
+        <tr v-for="data in dataAll" :key="data.id">
+          <td>{{ data.id }}</td>
+          <td>{{ data.notrans }}</td>
+          <td>{{ data.personid }}</td>
+          <td>{{ data.hobbyid }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- <data-table :columns="headers" url="http://127.0.0.1:8000/api/datahobby">
+    </data-table> -->
   </div>
 </template>
 
@@ -44,22 +40,24 @@ export default {
   data() {
     return {
       dataAll: [],
-      headers: [
-        { label: "id", field: "dataAll.id" },
-        { label: "kode", field: "dataAll.notrans" },
-        { label: "ID person", field: "dataAll.personid" },
-        { label: "ID hobi", field: "dataAll.hobiid" }
-      ],
       page: 0,
       totalPassengers: 0,
       numberOfPages: 0,
       loading: true,
-      options: {}
+      options: {},
+      menu: [
+        {
+          header: true,
+          title: "this is main",
+          hiddenOnCollapse: true
+        }
+      ]
     };
   },
   mounted() {
     let self = this;
     self.init();
+    self.openTab(self.$route.params.tab);
   },
   methods: {
     init() {
@@ -68,6 +66,10 @@ export default {
         console.log(resp.data);
         self.dataAll = resp.data;
       });
+    },
+    openTab(id) {
+      let self = this;
+      self.$store.dispatch("openTabAct", id);
     }
   },
   watch: {
@@ -80,4 +82,8 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.main {
+  margin-left: 250px;
+}
+</style>

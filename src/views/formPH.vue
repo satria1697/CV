@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app main">
     <router-link to="/">
       Home
     </router-link>
@@ -46,6 +46,7 @@ export default {
   mounted() {
     let self = this;
     self.init();
+    self.openTab(self.$route.params.tab);
   },
   methods: {
     init() {
@@ -53,7 +54,9 @@ export default {
       let apiPerson = "http://127.0.0.1:8000/api/person";
       let apiHobi = "http://127.0.0.1:8000/api/hobby";
       let apiIp = "https://api.ipify.org?format=json";
-      const getPerson = Axios.get(apiPerson);
+      const getPerson = Axios.get(apiPerson, {
+        params: { find: "", perPage: 100 }
+      });
       const getHobi = Axios.get(apiHobi);
       const getIp = Axios.get(apiIp);
 
@@ -63,7 +66,7 @@ export default {
             const respPerson = responses[0];
             const respHobi = responses[1];
             const respIp = responses[2];
-            self.personid = respPerson.data;
+            self.personid = respPerson.data.data;
             self.hobiid = respHobi.data;
             self.aipi = respIp.data.ip;
             // console.log(respIp.data.ip);
@@ -105,12 +108,18 @@ export default {
         // session: sess
       };
       rawData = qs.stringify(rawData);
-      Axios.post("http://127.0.0.1:8000/api/datahobby", rawData, config).then(
-        resp => {
-          // console.log(resp);
-          self.noform = resp.data.data;
-        }
-      );
+      Axios.post("http://127.0.0.1:8000/api/datahobby", rawData, config)
+        .then(resp => {
+          // console.log(resp.data);
+          self.noform = resp.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    openTab(id) {
+      let self = this;
+      self.$store.dispatch("openTabAct", id);
     }
   }
 };

@@ -1,5 +1,5 @@
 <template>
-  <div class="formMain">
+  <div class="formMain main">
     <router-link to="/">Home</router-link>
     <div>
       <h1>Form pengisian data</h1>
@@ -41,6 +41,10 @@
       <span>Alamat</span>
       <input type="text" v-model="alamat" />
     </div>
+    <div class="form">
+      <span>Unggah Avatar</span>
+      <input type="file" v-on:change="onDataSelected($event)" />
+    </div>
     <div v-if="newForm" class="buttonBottom">
       <button class="btn" v-on:click="submitNew()">Submit</button>
       <button class="btn" v-on:click="reset()">Reset</button>
@@ -55,7 +59,6 @@
 </template>
 
 <script>
-import qs from "qs";
 import axios from "axios";
 export default {
   data() {
@@ -69,7 +72,8 @@ export default {
       alamat: "",
       id: "",
       berhasil: true,
-      nikEn: true
+      nikEn: true,
+      image: null
     };
   },
   methods: {
@@ -99,8 +103,19 @@ export default {
           self.tgll = response.data.tgll;
           self.gender = response.data.gender;
           self.alamat = response.data.alamat;
+          self.image = response.data.avatar;
         });
       }
+    },
+    openTab(id) {
+      let self = this;
+      self.$store.dispatch("openTabAct", id);
+    },
+    onDataSelected(event) {
+      let self = this;
+      // console.log(event)
+      self.image = event.target.files[0];
+      console.log(self.image);
     },
     checkEdit(edits) {
       let self = this;
@@ -117,7 +132,7 @@ export default {
       const config = {
         headers: {
           // eslint-disable-next-line
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/json'
         }
       };
       let self = this;
@@ -129,10 +144,15 @@ export default {
         gender: self.gender,
         alamat: self.alamat
       };
-      rawData = qs.stringify(rawData);
-      console.log(rawData);
+      // rawData = qs.stringify(rawData);
+      let formData = new FormData();
+      for (let key in rawData) {
+        formData.append(key, rawData[key]);
+      }
+      formData.append("image", self.image);
+      // console.log(rawData);
       axios
-        .post("http://127.0.0.1:8000/api/person", rawData, config)
+        .post("http://127.0.0.1:8000/api/person", formData, config)
         .then(response => {
           if (response.data === "gagal") {
             console.log(response);
@@ -147,7 +167,7 @@ export default {
       const config = {
         headers: {
           // eslint-disable-next-line
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/json'
         }
       };
       let rawData = {
@@ -158,11 +178,15 @@ export default {
         gender: self.gender,
         alamat: self.alamat
       };
-      rawData = qs.stringify(rawData);
-      console.log(rawData);
+      // rawData = qs.stringify(rawData);
+      let formData = new FormData();
+      for (let key in rawData) {
+        formData.append(key, rawData[key]);
+      }
+      formData.append("image", self.image);
       let link = "http://127.0.0.1:8000/api/person/{id}";
       let linknew = link.replace("{id}", ids);
-      axios.put(linknew, rawData, config).then(response => {
+      axios.put(linknew, formData, config).then(response => {
         if (response.data === "gagal") {
           self.berhasil = false;
         } else {
@@ -175,6 +199,8 @@ export default {
     let self = this;
     self.checkEdit(self.$route.params.edit);
     self.getData(self.$route.params.userId);
+    // console.log(self.$params)
+    self.openTab(self.$route.params.tab);
   }
 };
 </script>

@@ -4,10 +4,16 @@ import Person from "../views/Home.vue";
 import Form from "../views/About";
 import Homes from "../views/homes";
 import FormPH from "../views/formPH";
+import Dashboard from "../views/Dashboard"
 
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: "/",
+    name: "Dashboard",
+    component: Dashboard
+  },
   {
     path: "/person",
     name: "person",
@@ -19,7 +25,7 @@ const routes = [
     component: Form
   },
   {
-    path: "/",
+    path: "/Hobi",
     name: "Homes",
     component: Homes
   },

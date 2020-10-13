@@ -1,20 +1,8 @@
 <template>
-  <div class="main">
-    <router-link
-      class="buttonTop"
-      :to="{
-        name: 'Form',
-        params: {
-          edit: 'no'
-        }
-      }"
-    >
-      + Tambah
-    </router-link>
+  <div id="main">
     <div class="grid">
       <div class="grid-item_left record">
         <select v-model="perPage">
-          <option value="2">2</option>
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="25">25</option>
@@ -40,7 +28,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="psn in person" :key="psn.id">
+        <tr v-for="psn in data" :key="psn.id">
           <td>{{ psn.id }}</td>
           <td>{{ psn.nik }}</td>
           <td>{{ psn.nama }}</td>
@@ -49,10 +37,6 @@
           <td>{{ psn.gender }}</td>
           <td>{{ psn.alamat }}</td>
           <td class="buttonClass">
-            <router-link
-              :to="{ name: 'Form', params: { userId: psn.id, edit: 'yes' } }"
-              >Edit</router-link
-            >
             <button v-on:click="deletePerson(psn.id)">Delete</button>
           </td>
         </tr>
@@ -85,10 +69,10 @@
 <script>
 import axios from "axios";
 export default {
-  name: "HelloWorld",
+  name: "DataTable",
   data() {
     return {
-      person: [],
+      data: [],
       response: [],
       page: 1,
       searchQuery: "",
@@ -97,14 +81,13 @@ export default {
       nextState: 0,
       doubleState: 0,
       lastState: 0,
-      last: false
+      last: false,
+      link: "http://127.0.0.1:8000/api/person"
     };
   },
   mounted() {
     let self = this;
     self.updateData();
-    // console.log(self.$route.params)
-    self.openTab(self.$route.params.tab);
   },
   methods: {
     deletePerson(ids) {
@@ -120,7 +103,7 @@ export default {
     updateData() {
       let self = this;
       axios
-        .get("http://127.0.0.1:8000/api/person", {
+        .get(self.link, {
           params: {
             page: self.page,
             find: self.searchQuery,
@@ -180,10 +163,6 @@ export default {
       } else {
         self.last = false;
       }
-    },
-    openTab(id) {
-      let self = this;
-      self.$store.dispatch("openTabAct", id);
     }
   },
   watch: {
@@ -208,67 +187,4 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-td,
-th {
-  border: 1px black solid;
-  padding: 1em;
-}
-table {
-  border-collapse: collapse;
-  width: 100%;
-  table-layout: fixed;
-  .buttonClass {
-    display: grid;
-    a {
-      display: inline-block;
-      padding: 5px 20px;
-      margin: 5px;
-      border: 1px solid black;
-      border-radius: 15px;
-    }
-  }
-}
-
-.buttonTop {
-  display: inline-block;
-  padding: 15px 30px;
-  margin: 0px 0 10px 0;
-  border: 1px solid black;
-  border-radius: 15px;
-}
-
-a {
-  text-decoration: none;
-}
-.route {
-  width: 300px;
-  margin: 20px 50px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  span {
-    margin: 0 auto;
-    cursor: pointer;
-  }
-}
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-.grid-item {
-  &_left {
-    justify-self: start;
-  }
-  &_right {
-    justify-self: end;
-  }
-}
-.record {
-  margin: 20px;
-}
-span {
-  margin: 5px;
-  line-height: 1.4em;
-}
-</style>
+<style lang="scss" scoped></style>
